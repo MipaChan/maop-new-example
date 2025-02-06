@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "mahuap": "^1.0.12",
+    "mahuap": "1.0.13",
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

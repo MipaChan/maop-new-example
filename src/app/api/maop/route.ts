@@ -20,12 +20,24 @@ export async function POST(request: Request) {
     try {
         let result;
         switch (action) {
-            // case 'testRunTool':
-            //     result = await client.tools.testRun(payload.toolId, payload.params);
-            //     break
-            // case 'testRunAgent':
-            //     result = await client.agents.testRun(payload.agentId, payload.params);
-            //     break
+            case 'testRunTool':
+                result = await client.tools.testRun('67a49e41a9575c4df9398176', {
+                    params: [], body: {}
+                });
+                break
+            case 'testRunAgent':
+                result = await client.agents.testRun({
+                    agentId: '67a49e41a9575c4df9398176',
+                    input: 'Hi'
+                });
+                break
+            case 'updateTool':
+                result = await client.tools.update(payload.toolId, payload.tool);
+                break;
+            case 'updateAgent':
+                payload.agent.tools = ['67a49afda9575c4df9397def']
+                result = await client.agents.update(payload.agentId, payload.agent);
+                break;
             case 'createTool':
                 result = await client.tools.create(payload);
                 break;
@@ -56,9 +68,11 @@ export async function POST(request: Request) {
             default:
                 return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
         }
+        console.log('MAOP result:', result);
+
         return NextResponse.json(result);
     } catch (error) {
-        console.log('MAOP error:', error);
+        console.log('MAOP error:', JSON.stringify(error));
 
         return NextResponse.json({ error: error }, { status: 500 });
     }

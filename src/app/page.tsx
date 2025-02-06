@@ -8,8 +8,8 @@ export default function Home() {
   const [tools, setTools] = useState([]);
   const [agents, setAgents] = useState([]);
   const [chatUrl, setChatUrl] = useState('');
-  const [editingTool, setEditingTool] = useState(null);
-  const [editingAgent, setEditingAgent] = useState(null);
+  const [editingTool, setEditingTool] = useState<ToolFormData>();
+  const [editingAgent, setEditingAgent] = useState<ToolFormData>();
 
   const callMaopApi = async (action: string, payload?: any) => {
     const response = await fetch('/api/maop', {
@@ -164,8 +164,8 @@ export default function Home() {
                 <p style={itemNameStyle}>{tool.nameForHuman}</p>
                 <div style={buttonGroupStyle}>
                   <button style={smallButtonStyle} onClick={() => setEditingTool(tool)}>Edit</button>
-                  <button style={smallButtonStyle} onClick={() => callMaopApi('deleteTool', { toolId: tool.id })}>Delete</button>
-                  <button style={smallButtonStyle} onClick={() => callMaopApi('publishTool', { id: tool.id })}>Publish</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunTool', { toolId: tool.id })}>Delete</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunAgent', { id: tool.id })}>Publish</button>
                 </div>
               </div>
             ))}
@@ -192,15 +192,14 @@ export default function Home() {
       {
         chatUrl && (
           <section style={{ ...sectionStyle, marginTop: '20px' }}>
-            <h2 style={headerStyle}>Chat</h2>
+            <h2 style={headerStyle}>Chat <a href={chatUrl}>{chatUrl}</a></h2>
             <iframe src={chatUrl} style={{ width: '100%', height: '500px', border: '1px solid #ddd', borderRadius: '8px' }} />
           </section>
         )
       }
-      {/* 
       {editingTool && (
         <div style={modalStyle}>
-          <div style={modalContentStyle}></div>
+          <div style={modalContentStyle}>
             <h2 style={headerStyle}>Edit Tool</h2>
             <form onSubmit={updateTool} style={formStyle}>
               <input style={inputStyle} name="avatar" placeholder="Avatar URL" defaultValue={editingTool.avatar} />
@@ -212,17 +211,18 @@ export default function Home() {
               <input style={inputStyle} name="url" placeholder="API URL" defaultValue={editingTool.url} />
               <div style={buttonGroupStyle}>
                 <button style={buttonStyle} type="submit">Update Tool</button>
-                <button style={{...buttonStyle, backgroundColor: '#666'}} onClick={() => setEditingTool(null)}>Cancel</button>
+                <button style={{ ...buttonStyle, backgroundColor: '#666' }} onClick={() => setEditingTool(null)}>Cancel</button>
               </div>
             </form>
           </div>
+        </div>
       )}
 
       {editingAgent && (
         <div style={modalStyle}>
           <div style={modalContentStyle}>
             <h2 style={headerStyle}>Edit Agent</h2>
-            <form onSubmit={updateAgent} style={formStyle}></form>
+            <form onSubmit={updateAgent} style={formStyle}>
               <input style={inputStyle} name="avatar" placeholder="Avatar URL" defaultValue={editingAgent.avatar} />
               <input style={inputStyle} name="nameForModel" placeholder="Name for Model" defaultValue={editingAgent.nameForModel} />
               <input style={inputStyle} name="nameForHuman" placeholder="Name for Human" defaultValue={editingAgent.nameForHuman} />
@@ -231,12 +231,13 @@ export default function Home() {
               <input style={inputStyle} name="toolId" placeholder="Tool ID" defaultValue={editingAgent.tools[0] || ''} />
               <div style={buttonGroupStyle}>
                 <button style={buttonStyle} type="submit">Update Agent</button>
-                <button style={{...buttonStyle, backgroundColor: '#666'}} onClick={() => setEditingAgent(null)}>Cancel</button>
+                <button style={{ ...buttonStyle, backgroundColor: '#666' }} onClick={() => setEditingAgent(null)}>Cancel</button>
               </div>
             </form>
           </div>
-        </div>
-      )} */}
+        </div >
+      )
+      }
     </>
   );
 }
