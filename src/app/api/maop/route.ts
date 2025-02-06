@@ -1,0 +1,65 @@
+import { NextResponse } from 'next/server';
+import { MaopClient } from 'mahuap';
+
+const getMaopClient = async () => {
+    const config = {
+        baseURL: process.env.MAOP_BASE_URL!,
+        apiKey: process.env.MAOP_API_KEY!,
+        openUserId: process.env.MAOP_USER_ID!
+    }
+    const client = await MaopClient.getClient(config);
+
+    return client;
+};
+
+export async function POST(request: Request) {
+    const client = await getMaopClient();
+    const { action, payload } = await request.json();
+    console.log('MAOP action:', action, 'payload:', payload);
+
+    try {
+        let result;
+        switch (action) {
+            // case 'testRunTool':
+            //     result = await client.tools.testRun(payload.toolId, payload.params);
+            //     break
+            // case 'testRunAgent':
+            //     result = await client.agents.testRun(payload.agentId, payload.params);
+            //     break
+            case 'createTool':
+                result = await client.tools.create(payload);
+                break;
+            case 'createAgent':
+                result = await client.agents.create(payload);
+                break;
+            case 'listTools':
+                result = await client.tools.list({ isPublic: false });
+                break;
+            case 'listAgents':
+                result = await client.agents.list({ isPublic: false });
+                break;
+            case 'deleteTool':
+                result = await client.tools.delete(payload.toolId);
+                break;
+            case 'deleteAgent':
+                result = await client.agents.delete(payload.agentId);
+                break;
+            case 'publishTool':
+                result = await client.tools.publishTool(payload.id);
+                break;
+            case 'publishAgent':
+                result = await client.agents.publishAgent(payload.id);
+                break;
+            case 'getChatUrl':
+                result = await client.getLoginUrl({ agentId: payload.agentId });
+                break;
+            default:
+                return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+        }
+        return NextResponse.json(result);
+    } catch (error) {
+        console.log('MAOP error:', error);
+
+        return NextResponse.json({ error: error }, { status: 500 });
+    }
+}
