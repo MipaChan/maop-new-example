@@ -2,8 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { ToolFormData, AgentFormData } from 'mahuap';
-import { Method } from '../../maop-sdk/src/types';
+import type { Method, ToolFormData, AgentFormData } from 'mahuap';
 
 export default function Home() {
   const [tools, setTools] = useState([]);
@@ -198,7 +197,7 @@ export default function Home() {
           </section>
         )
       }
-{/* 
+      {/* 
       {editingTool && (
         <div style={modalStyle}>
           <div style={modalContentStyle}></div>
