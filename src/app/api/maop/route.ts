@@ -7,6 +7,8 @@ const getMaopClient = async () => {
         apiKey: process.env.MAOP_API_KEY!,
         openUserId: process.env.MAOP_USER_ID!
     }
+    console.log(`MAOP config: ${JSON.stringify(config)}`);
+
     const client = await MaopClient.getClient(config);
 
     return client;
@@ -21,13 +23,13 @@ export async function POST(request: Request) {
         let result;
         switch (action) {
             case 'testRunTool':
-                result = await client.tools.testRun('67a49e41a9575c4df9398176', {
+                result = await client.tools.testRun(payload.toolId, {
                     params: [], body: {}
                 });
                 break
             case 'testRunAgent':
                 result = await client.agents.testRun({
-                    agentId: '67a49e41a9575c4df9398176',
+                    agentId: payload.agentId,
                     input: 'Hi'
                 });
                 break
@@ -57,10 +59,10 @@ export async function POST(request: Request) {
                 result = await client.agents.delete(payload.agentId);
                 break;
             case 'publishTool':
-                result = await client.tools.publishTool(payload.id);
+                result = await client.tools.publishTool(payload.toolId);
                 break;
             case 'publishAgent':
-                result = await client.agents.publishAgent(payload.id);
+                result = await client.agents.publishAgent(payload.agentId);
                 break;
             case 'getChatUrl':
                 result = await client.getLoginUrl({ agentId: payload.agentId });

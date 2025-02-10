@@ -164,8 +164,9 @@ export default function Home() {
                 <p style={itemNameStyle}>{tool.nameForHuman}</p>
                 <div style={buttonGroupStyle}>
                   <button style={smallButtonStyle} onClick={() => setEditingTool(tool)}>Edit</button>
-                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunTool', { toolId: tool.id })}>Delete</button>
-                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunAgent', { id: tool.id })}>Publish</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('deleteTool', { toolId: tool.id })}>Delete</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('publishTool', { toolId: tool.id })}>Publish</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunTool', { toolId: tool.id })}>TestRun</button>
                 </div>
               </div>
             ))}
@@ -180,7 +181,8 @@ export default function Home() {
                 <div style={buttonGroupStyle}>
                   <button style={smallButtonStyle} onClick={() => setEditingAgent(agent)}>Edit</button>
                   <button style={smallButtonStyle} onClick={() => callMaopApi('deleteAgent', { agentId: agent.id })}>Delete</button>
-                  <button style={smallButtonStyle} onClick={() => callMaopApi('publishAgent', { id: agent.id })}>Publish</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('publishAgent', { agentId: agent.id })}>Publish</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunTool', { agentId: agent.id  })}>TestRun</button>
                   <button style={smallButtonStyle} onClick={() => getChatUrl(agent.id)}>Chat</button>
                 </div>
               </div>
