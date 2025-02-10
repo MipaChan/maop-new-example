@@ -8,8 +8,8 @@ export default function Home() {
   const [tools, setTools] = useState([]);
   const [agents, setAgents] = useState([]);
   const [chatUrl, setChatUrl] = useState('');
-  const [editingTool, setEditingTool] = useState<ToolFormData>();
-  const [editingAgent, setEditingAgent] = useState<ToolFormData>();
+  const [editingTool, setEditingTool] = useState<ToolFormData | null>();
+  const [editingAgent, setEditingAgent] = useState<AgentFormData | null>();
 
   const callMaopApi = async (action: string, payload?: any) => {
     const response = await fetch('/api/maop', {
@@ -87,7 +87,7 @@ export default function Home() {
       method: formData.get('method') as Method,
       url: formData.get('url') as string,
     };
-    const result = await callMaopApi('updateTool', { toolId: editingTool.id, tool: toolData });
+    const result = await callMaopApi('updateTool', { toolId: editingTool?.id, tool: toolData });
     console.log('Tool updated:', result);
     setEditingTool(null);
     await listTools();
@@ -109,7 +109,7 @@ export default function Home() {
       shortcuts: [],
       tools: tools
     };
-    const result = await callMaopApi('updateAgent', { agentId: editingAgent.id, agent: agentData });
+    const result = await callMaopApi('updateAgent', { agentId: editingAgent?.id, agent: agentData });
     console.log('Agent updated:', result);
     setEditingAgent(null);
     await listAgents();
@@ -129,8 +129,8 @@ export default function Home() {
             <input style={inputStyle} name="nameForHuman" placeholder="Name for Human" defaultValue={'name 4 human'} />
             <input style={inputStyle} name="descriptionForModel" placeholder="Description for Model" defaultValue={'desc 4 model'} />
             <input style={inputStyle} name="descriptionForHuman" placeholder="Description for Human" defaultValue={'desc 4 human'} />
-            <input style={inputStyle} name="method" placeholder="Method" defaultValue={'POST'} />
-            <input style={inputStyle} name="url" placeholder="API URL" defaultValue={'https://api.example.com/endpoint'} />
+            <input style={inputStyle} name="method" placeholder="Method" defaultValue={'GET'} />
+            <input style={inputStyle} name="url" placeholder="API URL" defaultValue={'http://ip-api.com/json'} />
             <button style={buttonStyle} type="submit">Create Tool</button>
           </form>
         </section>
@@ -182,7 +182,7 @@ export default function Home() {
                   <button style={smallButtonStyle} onClick={() => setEditingAgent(agent)}>Edit</button>
                   <button style={smallButtonStyle} onClick={() => callMaopApi('deleteAgent', { agentId: agent.id })}>Delete</button>
                   <button style={smallButtonStyle} onClick={() => callMaopApi('publishAgent', { agentId: agent.id })}>Publish</button>
-                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunTool', { agentId: agent.id  })}>TestRun</button>
+                  <button style={smallButtonStyle} onClick={() => callMaopApi('testRunTool', { agentId: agent.id })}>TestRun</button>
                   <button style={smallButtonStyle} onClick={() => getChatUrl(agent.id)}>Chat</button>
                 </div>
               </div>
@@ -230,7 +230,7 @@ export default function Home() {
               <input style={inputStyle} name="nameForHuman" placeholder="Name for Human" defaultValue={editingAgent.nameForHuman} />
               <input style={inputStyle} name="descriptionForModel" placeholder="Description for Model" defaultValue={editingAgent.descriptionForModel} />
               <input style={inputStyle} name="descriptionForHuman" placeholder="Description for Human" defaultValue={editingAgent.descriptionForHuman} />
-              <input style={inputStyle} name="toolId" placeholder="Tool ID" defaultValue={editingAgent.tools[0] || ''} />
+              <input style={inputStyle} name="toolId" placeholder="Tool ID" defaultValue={editingAgent?.tools[0] || ''} />
               <div style={buttonGroupStyle}>
                 <button style={buttonStyle} type="submit">Update Agent</button>
                 <button style={{ ...buttonStyle, backgroundColor: '#666' }} onClick={() => setEditingAgent(null)}>Cancel</button>
