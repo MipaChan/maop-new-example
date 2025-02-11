@@ -162,6 +162,7 @@ export default function Home() {
             {tools.map((tool: any) => (
               <div key={tool.id} style={itemStyle}>
                 <p style={itemNameStyle}>{tool.nameForHuman}</p>
+                <p style={itemNameStyle}>{tool.id}</p>
                 <div style={buttonGroupStyle}>
                   <button style={smallButtonStyle} onClick={() => setEditingTool(tool)}>Edit</button>
                   <button style={smallButtonStyle} onClick={() => callMaopApi('deleteTool', { toolId: tool.id })}>Delete</button>
@@ -178,6 +179,7 @@ export default function Home() {
             {agents.map((agent: any) => (
               <div key={agent.id} style={itemStyle}>
                 <p style={itemNameStyle}>{agent.nameForHuman}</p>
+                <p style={itemNameStyle}>{agent.id}</p>
                 <div style={buttonGroupStyle}>
                   <button style={smallButtonStyle} onClick={() => setEditingAgent(agent)}>Edit</button>
                   <button style={smallButtonStyle} onClick={() => callMaopApi('deleteAgent', { agentId: agent.id })}>Delete</button>
@@ -191,10 +193,10 @@ export default function Home() {
         </div>
       </section>
 
+      {chatUrl && <h2 style={headerStyle}>Chat <a href={chatUrl}>{chatUrl}</a></h2>}
       {
         chatUrl && (
           <section style={{ ...sectionStyle, marginTop: '20px' }}>
-            <h2 style={headerStyle}>Chat <a href={chatUrl}>{chatUrl}</a></h2>
             <iframe src={chatUrl} style={{ width: '100%', height: '500px', border: '1px solid #ddd', borderRadius: '8px' }} />
           </section>
         )
