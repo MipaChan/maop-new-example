@@ -2,14 +2,14 @@
 'use client';
 
 import { useState } from 'react';
-import type { Method, ToolFormData, AgentFormData } from 'mahuap';
+import type { Method, ToolFormData, AgentFormData, ToolDefinition, AgentDefinition } from 'mahuap';
 
 export default function Home() {
   const [tools, setTools] = useState([]);
   const [agents, setAgents] = useState([]);
   const [chatUrl, setChatUrl] = useState('');
-  const [editingTool, setEditingTool] = useState<ToolFormData | null>();
-  const [editingAgent, setEditingAgent] = useState<AgentFormData | null>();
+  const [editingTool, setEditingTool] = useState<ToolDefinition | null>();
+  const [editingAgent, setEditingAgent] = useState<AgentDefinition | null>();
 
   const callMaopApi = async (action: string, payload?: any) => {
     const response = await fetch('/api/maop', {
@@ -232,7 +232,7 @@ export default function Home() {
               <input style={inputStyle} name="nameForHuman" placeholder="Name for Human" defaultValue={editingAgent.nameForHuman} />
               <input style={inputStyle} name="descriptionForModel" placeholder="Description for Model" defaultValue={editingAgent.descriptionForModel} />
               <input style={inputStyle} name="descriptionForHuman" placeholder="Description for Human" defaultValue={editingAgent.descriptionForHuman} />
-              <input style={inputStyle} name="toolId" placeholder="Tool ID" defaultValue={editingAgent?.tools[0] || ''} />
+              <input style={inputStyle} name="toolId" placeholder="Tool ID" defaultValue={editingAgent?.tools[0].id || ''} />
               <div style={buttonGroupStyle}>
                 <button style={buttonStyle} type="submit">Update Agent</button>
                 <button style={{ ...buttonStyle, backgroundColor: '#666' }} onClick={() => setEditingAgent(null)}>Cancel</button>
