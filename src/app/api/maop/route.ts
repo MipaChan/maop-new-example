@@ -70,7 +70,7 @@ export async function POST(request: Request) {
             default:
                 return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
         }
-        console.log('MAOP result:', result);
+        console.log(`MAOP ${action} result:`, result);
 
         return NextResponse.json(result);
     } catch (error) {
